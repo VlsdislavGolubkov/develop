@@ -1,4 +1,4 @@
-def mask_account_card (card_or_account_number:str):
+def mask_account_card(card_or_account_number: str):
     """Маскирует номер карты или счета"""
 
     # Обработка счета
@@ -40,9 +40,10 @@ def mask_account_card (card_or_account_number:str):
         return f"{card_type} {masked_number}".strip()
 
 
-def get_date(date_ISO_8601:str):
-    date=date_ISO_8601.replace("-", "")
-    year=date[:4]
-    month=date[4:6]
-    day=date[6:8]
+def get_date(date_ISO_8601: str):
+    """Функция возвращает дату в формате дд.мм.гггг"""
+    date = date_ISO_8601.replace("-", "")
+    year = date[:4]
+    month = date[4:6]
+    day = date[6:8]
     return f"{day}.{month}.{year}"
