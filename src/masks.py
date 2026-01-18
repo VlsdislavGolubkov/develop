@@ -1,22 +1,41 @@
 from typing import Union
 
+def get_mask_account(account_number: str) -> str:
+    """Маскирует номер карты или счета"""
 
-# Реализуем функцию получения номера карты и возврата ее маски
-def get_mask_card_number(card_number: Union[str, int]) -> str:
-    """Функция, которая принимает числовое или строковое
-    значение номера карты и меняет некоторые символы на звездочки ***"""
-    divided_card_number: str = (
-        str(card_number)[:6] + "*" * 6 + str(card_number)[12:]
-    )  # заменяем нужные символы звездочками
-    masked_card_number = " ".join(divided_card_number[i : i + 4] for i in range(0, len(divided_card_number), 4))
-    # разделяем число на группы по 4 символа
-    return masked_card_number  # возвращаем номер карты с маской
+    # Обработка счета
+    if 'счет' in account_number.lower():
+        # Извлекаем цифры
+        digits = ''.join(filter(str.isdigit, account_number))
+        if len(digits) >= 4:
+            masked_account_number = f"Счет **{digits[-4:]}"
+        return masked_account_number.strip()
 
+def get_mask_card_number(card_number: str) -> str:
+    # Разделяем на тип карты и номер
+    # Тип карты - все буквы и пробелы до первой цифры
+    card_type = ""
+    card_number1 = ""
 
-#  Реализуем функцию получения номера счета и возврата его маски
-def get_mask_account(account: Union[str, int]) -> str:
-    """Функция, которая принимает числовое или строковое
-    значение номера счета и возвращает последние 4 числа,
-    а остальные заменяет двумя звездочками"""
-    masked_account: str = f"**{str(account)[-4:]}"  # берем последние 4 числа и добавляем две звезды в начале
-    return masked_account  # Возвращаем номер счета с маской
+    # Ищем первую цифру
+    for char in card_number:
+        if char.isdigit():
+            # Нашли первую цифру - всё что после будет номером
+            # Находим индекс этой цифры
+            idx = card_number.index(char)
+            card_type = card_number[:idx].strip()
+            card_number1 = card_number[idx:]
+            break
+
+        # Если не нашли цифр
+        if not card_number:
+            return card_number
+
+        # Маскируем номер карты
+        digits = ''.join(filter(str.isdigit, card_number))
+        if len(digits) >= 16:
+            masked_number = f"{digits[:4]} {digits[4:6]}** **** {digits[-4:]}"
+        else:
+            masked_number = card_number
+
+        return f"{card_type} {masked_number}".strip()
