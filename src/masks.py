@@ -9,7 +9,8 @@ def get_mask_account(account_number: str) -> str:
         digits = ''.join(filter(str.isdigit, account_number))
         if len(digits) >= 4:
             masked_account_number = f"Счет **{digits[-4:]}"
-        return masked_account_number.strip()
+
+    return masked_account_number.strip()
 
 def get_mask_card_number(card_number: str) -> str:
     # Разделяем на тип карты и номер
@@ -25,17 +26,12 @@ def get_mask_card_number(card_number: str) -> str:
             idx = card_number.index(char)
             card_type = card_number[:idx].strip()
             card_number1 = card_number[idx:]
-            break
-
-        # Если не нашли цифр
-        if not card_number:
-            return card_number
 
         # Маскируем номер карты
-        digits = ''.join(filter(str.isdigit, card_number))
+        digits = ''.join(filter(str.isdigit, card_number1))
         if len(digits) >= 16:
             masked_number = f"{digits[:4]} {digits[4:6]}** **** {digits[-4:]}"
         else:
-            masked_number = card_number
+            masked_number = card_number1
 
-        return f"{card_type} {masked_number}".strip()
+    return f"{card_type} {masked_number}".strip()
