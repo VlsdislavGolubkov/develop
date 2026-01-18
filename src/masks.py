@@ -1,5 +1,6 @@
 from typing import Union
 
+
 def get_mask_account(account_number: str) -> str:
     """Маскирует номер карты или счета"""
 
